@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE Mechanical Study Plan</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: system-ui, sans-serif; background:#1C0010; color:#FFCCE0; min-height:100vh; }
+.header { background:linear-gradient(180deg,#330018,#1C0010); padding:24px 20px 0; border-bottom:1px solid #4a0028; }
+.inner { max-width:780px; margin:0 auto; }
+.eyebrow { font-size:11px; letter-spacing:4px; color:#FF5599; font-weight:700; margin-bottom:5px; }
+h1 { font-size:24px; font-weight:800; color:#FFE0EE; margin-bottom:3px; }
+.sub { font-size:12px; color:#B05878; margin-bottom:12px; }
+.sub span { color:#FF5599; }
+.toprow { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px; }
+.alert { background:#2a0018; border:1px solid #7a0040; border-radius:8px; padding:10px 14px; margin-bottom:12px; display:flex; gap:10px; align-items:center; font-size:13px; color:#FFB3D1; }
+.alert strong { color:#FF5599; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:12px; }
+.stat { background:#2a0018; border:1px solid #4a0028; border-radius:8px; padding:8px 12px; }
+.stat .v { font-size:17px; font-weight:800; color:#FFE0EE; }
+.stat .l { font-size:10px; color:#C4608A; margin-top:1px; }
+.tabs { display:flex; gap:4px; }
+.tab { padding:9px 16px; border:none; background:transparent; cursor:pointer; font-size:13px; font-weight:600; color:#C4608A; border-bottom:2px solid transparent; }
+.tab.active { color:#FF5599; border-bottom-color:#FF5599; }
+.content { max-width:780px; margin:0 auto; padding:18px 20px 60px; }
+.filters { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+.fbtn { padding:5px 11px; border-radius:20px; border:1px solid #4a0028; background:transparent; color:#C4608A; font-size:11px; font-weight:600; cursor:pointer; }
+.card { border-radius:10px; border:1px solid #4a0028; background:#2a0018; margin-bottom:7px; overflow:hidden; transition:opacity 0.2s; }
+.card.done { opacity:0.45; background:#200010; }
+.card.pday { background:#220012; }
+.card.xday { background:#260010; }
+.ch { display:flex; align-items:center; gap:10px; padding:12px 14px; cursor:pointer; user-select:none; }
+.cb { width:19px; height:19px; border-radius:5px; border:2px solid #7A3055; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer; font-size:12px; color:#FF5599; }
+.cb.on { background:#7a0040; border-color:#FF5599; }
+.num { font-size:11px; font-weight:700; width:24px; flex-shrink:0; }
+.dt { font-size:11px; color:#7A3055; width:80px; flex-shrink:0; }
+.ti { flex:1; min-width:0; }
+.tn { font-weight:700; font-size:14px; color:#FFE0EE; line-height:1.3; }
+.card.done .tn { color:#7A3055; }
+.tq { font-size:11px; color:#C4608A; margin-top:2px; }
+.ph { font-size:9px; font-weight:700; flex-shrink:0; letter-spacing:0.5px; }
+.arr { color:#7A3055; font-size:11px; flex-shrink:0; transition:transform 0.2s; display:inline-block; }
+.arr.open { transform:rotate(180deg); }
+.body { padding:0 14px 14px 66px; border-top:1px solid #4a0028; display:none; }
+.body.open { display:block; }
+.sl { font-size:9px; letter-spacing:2px; font-weight:700; color:#C4608A; margin:12px 0 7px; }
+.sr { display:flex; gap:7px; margin-bottom:5px; }
+.sa { flex-shrink:0; margin-top:2px; font-size:11px; }
+.st { font-size:13px; color:#F0A0C0; line-height:1.5; }
+.tip { border-radius:7px; padding:11px 13px; margin:11px 0 10px; }
+.tiplbl { font-size:9px; letter-spacing:2px; font-weight:700; color:#FF5599; margin-bottom:5px; }
+.tiptxt { font-size:13px; color:#FFD0E5; line-height:1.6; }
+.rg { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.rb { background:#1C0010; border-radius:7px; padding:10px 12px; }
+.rl { font-size:9px; letter-spacing:2px; font-weight:700; margin-bottom:7px; }
+.ri { font-size:12px; color:#B05878; margin-bottom:5px; line-height:1.4; display:flex; gap:5px; }
+#pt { display:block; }
+#rt { display:none; }
+.rs { margin-bottom:28px; }
+.rst { font-size:13px; font-weight:700; letter-spacing:1px; margin-bottom:10px; }
+.rc { padding:11px 14px; background:#2a0018; border:1px solid #4a0028; border-radius:8px; margin-bottom:7px; border-left:3px solid; }
+.rcn { font-size:14px; font-weight:700; color:#FFE0EE; margin-bottom:3px; }
+.rcd { font-size:13px; color:#B05878; line-height:1.5; }
+.pwrap { text-align:center; }
+.plbl { font-size:11px; color:#C4608A; margin-top:2px; }
+@media(max-width:500px){ .rg{grid-template-columns:1fr} .ph{display:none} .dt{width:66px} .stats{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="inner">
+    <div class="toprow">
+      <div>
+        <div class="eyebrow">NCEES · FE MECHANICAL CBT</div>
+        <h1>44-Session Study Plan</h1>
+        <div class="sub">Thu Mar 19 → Fri Aug 21 &nbsp;·&nbsp; Thu + Fri &nbsp;·&nbsp; <span>1 topic per session · Exam: Sep 2026</span></div>
+      </div>
+      <div class="pwrap">
+        <svg width="68" height="68" viewBox="0 0 68 68">
+          <circle cx="34" cy="34" r="27" fill="none" stroke="#4a0028" stroke-width="6"/>
+          <circle id="ring" cx="34" cy="34" r="27" fill="none" stroke="#FF5599" stroke-width="6"
+            stroke-dasharray="169.6" stroke-dashoffset="169.6" stroke-linecap="round" transform="rotate(-90 34 34)"/>
+          <text id="pct" x="34" y="39" text-anchor="middle" fill="#FFE0EE" font-size="13" font-weight="bold">0%</text>
+        </svg>
+        <div class="plbl" id="pcnt">0 / 44</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">44</div><div class="l">Sessions total</div></div>
+      <div class="stat"><div class="v">22 wks</div><div class="l">Study period</div></div>
+      <div class="stat"><div class="v">1 topic</div><div class="l">Per session</div></div>
+      <div class="stat"><div class="v" style="color:#FF5599">Sep 2026</div><div class="l">Target exam</div></div>
+    </div>
+    <div class="alert">
+      <span style="font-size:17px">⚠️</span>
+      <div><strong>Register by June at ncees.org</strong> — book your September Pearson VUE slot early!</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('plan')">📅 Study Plan</button>
+      <button class="tab" onclick="switchTab('resources')">📚 Resources</button>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div id="pt">
+    <div class="filters" id="filters"></div>
+    <div id="slist"></div>
+  </div>
+  <div id="rt"><div id="rcontent"></div></div>
+</div>
+
+<script>
+const S=[
+  // ── FOUNDATIONS ──
+  {id:1,date:"Thu Mar 19",phase:"Foundations",type:"learn",color:"#FF6B9D",
+   topic:"Calculus Basics",qRange:"Part of 6–9 math questions",
+   subs:["Watch 1–2 videos on derivatives and integrals","Focus: what is a derivative? what is an integral? how do you use them?","Practice 5 simple derivative problems (power rule, chain rule)","Practice 5 simple integral problems (basic antiderivatives)"],
+   tip:"You don't need to be a calculus expert — the handbook has all the formulas. You just need to recognize WHAT type of problem it is and WHICH formula to grab. Start slow and build confidence.",
+   free:["3Blue1Brown — 'Essence of Calculus' Ch.1 on YouTube (just watch, very visual)","Professor Leonard — Calc 1 Lecture 1 on YouTube (free)"],
+   book:"Kreyszig — Advanced Engineering Mathematics (Ch. 1–2)"},
+
+  {id:2,date:"Fri Mar 20",phase:"Foundations",type:"learn",color:"#FF6B9D",
+   topic:"Differential Equations & Linear Algebra",qRange:"Part of 6–9 math questions",
+   subs:["Learn what a differential equation is and how to identify one","Focus on first-order ODEs (separable equations)","Learn basic matrix operations: multiply, transpose, determinant","Look at Laplace transforms in the handbook — just know they exist and where to find them"],
+   tip:"ODEs look scary but FE questions usually give you a standard form you just plug into. Same with matrices — know the basic operations. Laplace transforms: find the table in the handbook and practice looking things up in it.",
+   free:["Professor Leonard — Differential Equations playlist (start with Lecture 1)","Khan Academy — Matrices (free)"],
+   book:"Kreyszig — Advanced Engineering Mathematics"},
+
+  {id:3,date:"Thu Mar 26",phase:"Foundations",type:"learn",color:"#FF6B9D",
+   topic:"Probability & Statistics",qRange:"4–6 exam questions",
+   subs:["Learn mean, median, mode, standard deviation — what they mean and how to calculate","Learn normal distribution: what it looks like, what z-score means","Practice reading a z-table (it's in the handbook)","Learn basic probability: P(A and B), P(A or B), conditional probability"],
+   tip:"Stats questions are some of the most straightforward on the exam. Know your basic formulas (they're in the handbook) and know how to read the normal distribution table. You can get all 4–6 of these questions right with a few hours of focused study.",
+   free:["Khan Academy — Statistics & Probability (free, start from the beginning)","The Organic Chemistry Tutor — Statistics on YouTube"],
+   book:"Montgomery & Runger — Applied Statistics for Engineers"},
+
+  {id:4,date:"Fri Mar 27",phase:"Foundations",type:"learn",color:"#FF6B9D",
+   topic:"Ethics & Engineering Economics",qRange:"4–6 questions each",
+   subs:["Read the NSPE Code of Ethics once (free PDF at nspe.org) — takes 20 min","Do 5 ethics practice questions to see how they're framed","Learn time value of money: what is present worth? future worth? annuity?","Learn the interest factor tables in the handbook (P/F, F/P, A/P, P/A)"],
+   tip:"Ethics = almost free points. The questions are scenario-based — ask yourself 'what would a responsible engineer do?' For economics, you never memorize the factor tables — they're in the handbook. Your only job is to pick the right one.",
+   free:["NSPE Code of Ethics — nspe.org (free PDF)","Chad Bhatt — Engineering Economics YouTube (free, very clear)"],
+   book:"Blank & Tarquin — Engineering Economy"},
+
+  // ── STATICS ──
+  {id:5,date:"Thu Apr 2",phase:"Statics",type:"learn",color:"#FF4D7A",
+   topic:"Forces & Free Body Diagrams",qRange:"Part of 9–14 statics questions",
+   subs:["Learn what a force vector is: magnitude, direction, components","Practice breaking forces into x and y components using sin and cos","Learn what a Free Body Diagram (FBD) is and how to draw one","Draw FBDs for 3 simple examples: a block on a surface, a hanging weight, a leaning ladder"],
+   tip:"The Free Body Diagram is THE most important skill in all of Statics, Dynamics, and Mechanics of Materials. Every single problem starts with one. Get very comfortable drawing them now — it pays dividends for months.",
+   free:["Jeff Hanson — Statics Lecture 1 on YouTube (free, starts from scratch — the best)","Engineer4Free — Statics: Force Vectors"],
+   book:"Hibbeler — Engineering Mechanics: Statics (Ch. 1–3)"},
+
+  {id:6,date:"Fri Apr 3",phase:"Statics",type:"learn",color:"#FF4D7A",
+   topic:"Equilibrium of Rigid Bodies",qRange:"Part of 9–14 statics questions",
+   subs:["Learn the equilibrium conditions: ΣFx = 0, ΣFy = 0, ΣM = 0","Practice finding reactions at supports (pins, rollers, fixed supports)","Solve 3 equilibrium problems: a beam with loads, a ladder against a wall","Learn the difference between 2D and 3D equilibrium"],
+   tip:"Equilibrium problems are very formulaic: (1) draw FBD, (2) write the 3 equations, (3) solve. The hardest part is drawing the FBD correctly. Once that's right, the math is just algebra.",
+   free:["Jeff Hanson — Equilibrium YouTube (same Statics playlist, Lecture 2–4)","structurefree — Beam Reactions on YouTube"],
+   book:"Hibbeler — Engineering Mechanics: Statics (Ch. 4–5)"},
+
+  {id:7,date:"Thu Apr 9",phase:"Statics",type:"learn",color:"#FF4D7A",
+   topic:"Trusses",qRange:"Part of 9–14 statics questions",
+   subs:["Learn what a truss is and the assumptions we make (two-force members, pins at joints)","Learn Method of Joints: analyze each joint starting from one with only 2 unknowns","Learn Method of Sections: cut through 3 members to find one member's force fast","Practice: solve one truss using Method of Joints, one using Method of Sections"],
+   tip:"Trusses are almost guaranteed on the FE exam. Method of Joints is systematic but slow. Method of Sections is faster when you just need one specific member. Check for zero-force members first — they save a lot of time.",
+   free:["Jeff Hanson — Trusses YouTube (Statics playlist, search 'Jeff Hanson trusses')","structurefree — Method of Sections on YouTube"],
+   book:"Hibbeler — Engineering Mechanics: Statics (Ch. 6)"},
+
+  {id:8,date:"Fri Apr 10",phase:"Statics",type:"learn",color:"#FF4D7A",
+   topic:"Centroids & Moments of Inertia",qRange:"Part of 9–14 statics questions",
+   subs:["Learn what a centroid is: the geometric center of a shape","Practice finding centroids of composite shapes (split into rectangles/triangles, combine)","Learn moment of inertia (I): what it measures, formula for a rectangle and circle","Learn the Parallel Axis Theorem: I = I_c + A·d² — used for composite shapes"],
+   tip:"Composite shapes: always break them into simple shapes you know (rectangles, circles, triangles). Find the centroid of each part, then take a weighted average. The Parallel Axis Theorem formula is in the handbook — you just need to know how to apply it.",
+   free:["Jeff Hanson — Centroids YouTube (Statics playlist)","The Organic Chemistry Tutor — Centroid of Composite Shapes YouTube"],
+   book:"Hibbeler — Engineering Mechanics: Statics (Ch. 9–10)"},
+
+  // ── PRACTICE 1 ──
+  {id:9,date:"Thu Apr 16",phase:"Statics",type:"practice",color:"#FF4D7A",
+   topic:"⚡ Practice — Foundations & Statics",qRange:"20 problems — timed",
+   subs:["Do 5 math/stats problems","Do 5 ethics/econ problems","Do 10 statics problems: equilibrium, trusses, centroids","Time yourself: ~3 minutes per problem","For every wrong answer: find the formula in the FE handbook and redo it"],
+   tip:"This is your first practice session — it's okay if you get a lot wrong! The whole point is to see where your gaps are. Wrong answers now are valuable data. Write down every topic where you struggled.",
+   free:["PrepFE app — free practice questions by topic","Lindeburg — FE Mechanical Practice Problems"],
+   book:"NCEES FE Reference Handbook — practice finding things in it"},
+
+  // ── DYNAMICS ──
+  {id:10,date:"Fri Apr 17",phase:"Dynamics",type:"learn",color:"#FF7AAD",
+   topic:"Kinematics — How Things Move",qRange:"Part of 10–15 dynamics questions",
+   subs:["Learn the difference between kinematics (motion) and kinetics (forces causing motion)","Learn the 4 key equations for constant acceleration: v = v₀ + at, x = x₀ + v₀t + ½at², v² = v₀² + 2ax, etc.","Practice: a car accelerates from rest — find velocity after 5 seconds","Learn 2D motion: projectile motion, breaking into x and y directions"],
+   tip:"Kinematics is just describing motion mathematically — no forces yet. The 4 constant-acceleration equations are in the handbook. For 2D motion, always separate into x-direction and y-direction and solve each independently.",
+   free:["Jeff Hanson — Dynamics Lecture 1 YouTube (free, starts from basics)","The Organic Chemistry Tutor — Kinematics problems"],
+   book:"Hibbeler — Engineering Mechanics: Dynamics (Ch. 12)"},
+
+  {id:11,date:"Thu Apr 23",phase:"Dynamics",type:"learn",color:"#FF7AAD",
+   topic:"Newton's Laws & Forces in Motion",qRange:"Part of 10–15 dynamics questions",
+   subs:["Review Newton's 3 laws — especially F = ma in detail","Learn how to draw a FBD AND a kinetic diagram (showing ma) side by side","Practice: find acceleration of a block being pulled on a surface with friction","Learn Newton's law for circular motion: centripetal acceleration = v²/r"],
+   tip:"The process is ALWAYS: (1) draw FBD, (2) draw kinetic diagram with ma arrow, (3) write ΣF = ma in x and y directions, (4) solve. If you follow this process every time you won't miss these questions.",
+   free:["Jeff Hanson — Newton's Law Dynamics YouTube","Michel van Biezen — F=ma problems on YouTube"],
+   book:"Hibbeler — Engineering Mechanics: Dynamics (Ch. 13)"},
+
+  {id:12,date:"Fri Apr 24",phase:"Dynamics",type:"learn",color:"#FF7AAD",
+   topic:"Work, Energy & Power",qRange:"Part of 10–15 dynamics questions",
+   subs:["Learn the work-energy theorem: Work = ΔKE = ½mv₂² - ½mv₁²","Learn potential energy: gravitational (mgh) and spring (½kx²)","Learn conservation of energy: when to use it (no friction losses)","Practice: a roller coaster problem, a spring launching a block"],
+   tip:"Work-energy is powerful because it skips the middle of the motion — you only care about start and end states. Use it when you don't need to know forces during the motion. If friction is involved, subtract the work done by friction.",
+   free:["Jeff Hanson — Work Energy Dynamics YouTube","The Efficient Engineer — Work and Energy (great explainer)"],
+   book:"Hibbeler — Engineering Mechanics: Dynamics (Ch. 14)"},
+
+  {id:13,date:"Thu Apr 30",phase:"Dynamics",type:"learn",color:"#FF7AAD",
+   topic:"Impulse, Momentum & Impact",qRange:"Part of 10–15 dynamics questions",
+   subs:["Learn linear momentum: p = mv","Learn impulse-momentum: impulse = change in momentum (F·Δt = m·Δv)","Learn conservation of momentum: when no external force, total momentum is constant","Learn impact problems: elastic (KE conserved), perfectly plastic (stick together), coefficient of restitution e"],
+   tip:"Impact problems: always write conservation of momentum. Then for elastic: KE is also conserved (gives 2 equations, 2 unknowns). For perfectly plastic: the two objects stick together. Coefficient of restitution e is in the handbook.",
+   free:["Jeff Hanson — Impulse & Momentum YouTube","Michel van Biezen — Impact problems YouTube"],
+   book:"Hibbeler — Engineering Mechanics: Dynamics (Ch. 15)"},
+
+  {id:14,date:"Fri May 1",phase:"Dynamics",type:"learn",color:"#FF7AAD",
+   topic:"Rigid Body Dynamics & Vibrations",qRange:"Part of 10–15 dynamics questions",
+   subs:["Learn the difference between translating and rotating rigid bodies","For rotation: ΣM = I·α (like F = ma but for rotation)","Learn vibrations: natural frequency ωn = √(k/m), period T = 2π/ωn","Learn damping ratio: underdamped (ζ<1), overdamped (ζ>1), critical (ζ=1)"],
+   tip:"For rigid bodies add a moment equation to your FBD. For vibrations: the natural frequency formula is the most tested thing — know it cold. If ζ < 1 (underdamped), the system oscillates. If ζ > 1, it slowly decays to rest.",
+   free:["Jeff Hanson — Rigid Body Dynamics YouTube","Michel van Biezen — Vibrations playlist on YouTube (free)"],
+   book:"Hibbeler — Dynamics (Ch. 17) + Rao — Mechanical Vibrations (Ch. 1–2 only)"},
+
+  // ── PRACTICE 2 ──
+  {id:15,date:"Thu May 7",phase:"Dynamics",type:"practice",color:"#FF7AAD",
+   topic:"⚡ Practice — Dynamics",qRange:"20 problems — timed",
+   subs:["5 kinematics problems (find velocity, acceleration, position)","5 Newton's law problems (find acceleration or force)","5 work-energy problems","5 momentum/vibration problems","Write down every formula you had to look up — those are your weak spots"],
+   tip:"Statics + Dynamics together = the largest topic block on the FE. Nailing these gives you a huge score boost. Don't rush this practice session — really understand every wrong answer.",
+   free:["PrepFE app — Dynamics questions","Lindeburg — FE Mechanical Practice Problems (Dynamics chapter)"],
+   book:"NCEES FE Handbook — Dynamics section"},
+
+  // ── MECHANICS OF MATERIALS ──
+  {id:16,date:"Fri May 8",phase:"Mech of Materials",type:"learn",color:"#FF5599",
+   topic:"Stress & Strain — The Basics",qRange:"Part of 9–14 questions",
+   subs:["Learn normal stress: σ = P/A (force divided by area)","Learn normal strain: ε = δ/L (deformation divided by original length)","Learn Hooke's Law: σ = E·ε (stress = Young's modulus × strain)","Learn shear stress: τ = V/A, and shear strain γ","Practice: find stress and strain in a rod being pulled"],
+   tip:"These are the most fundamental formulas in all of Mechanics of Materials. Every other topic builds on σ = P/A and σ = E·ε. Make sure you understand what each variable means physically — not just mathematically.",
+   free:["structurefree — Mechanics of Materials YouTube (start here — the best free source)","Engineer4Free — Stress & Strain module"],
+   book:"Hibbeler — Mechanics of Materials (Ch. 1–2)"},
+
+  {id:17,date:"Thu May 14",phase:"Mech of Materials",type:"learn",color:"#FF5599",
+   topic:"Bending Stress & Shear/Moment Diagrams",qRange:"Part of 9–14 questions",
+   subs:["Learn what a shear force diagram and bending moment diagram are","Practice drawing SFD and BMD for a simply supported beam with a point load","Learn the flexure formula: σ = M·c / I (bending stress)","Learn where maximum bending stress occurs in a cross-section"],
+   tip:"Draw shear and moment diagrams for EVERY beam problem — no shortcuts. σ = Mc/I is one of the top 3 most tested formulas on the entire FE exam. Practice it until it's automatic. The maximum stress is always at the outermost fiber (farthest from neutral axis).",
+   free:["structurefree — Shear & Moment Diagrams YouTube (excellent step-by-step)","Engineer4Free — Bending Stress"],
+   book:"Hibbeler — Mechanics of Materials (Ch. 6)"},
+
+  {id:18,date:"Fri May 15",phase:"Mech of Materials",type:"learn",color:"#FF5599",
+   topic:"Torsion & Mohr's Circle",qRange:"Part of 9–14 questions",
+   subs:["Learn torsional shear stress: τ = T·c / J (torsion formula)","Learn polar moment of inertia J for solid and hollow shafts","Learn what Mohr's circle is: a graphical tool for stress transformation","Practice drawing Mohr's circle: plot (σx, -τxy) and (σy, τxy), draw circle, find principal stresses"],
+   tip:"τ = Tc/J is the other top-tested formula alongside σ = Mc/I. Mohr's circle: once you practice drawing it 5–6 times it becomes automatic. The process is always the same — plot two points, draw the circle, read off the answers.",
+   free:["structurefree — Torsion YouTube","structurefree — Mohr's Circle YouTube (step-by-step — watch this one twice)"],
+   book:"Hibbeler — Mechanics of Materials (Ch. 5 + Ch. 9)"},
+
+  {id:19,date:"Thu May 21",phase:"Mech of Materials",type:"learn",color:"#FF5599",
+   topic:"Deflections, Buckling & Failure",qRange:"Part of 9–14 questions",
+   subs:["Learn beam deflection: use the formula table in the handbook (don't derive)","Learn Euler column buckling: Pcr = π²EI/(KL)² — know K for 4 end conditions","Learn failure theories: von Mises (ductile) and max normal stress (brittle)","Learn the basic fatigue concept: S-N diagram, endurance limit"],
+   tip:"Beam deflection formulas are in the handbook — look them up, don't memorize. Euler buckling: know K = 1 (pin-pin), K = 0.5 (fixed-fixed), K = 2 (fixed-free), K = 0.7 (fixed-pin). Failure theories: von Mises for ductile materials almost always.",
+   free:["structurefree — Beam Deflections + Buckling YouTube","The Efficient Engineer — Column Buckling explainer"],
+   book:"Hibbeler — Mechanics of Materials (Ch. 12 + 14)"},
+
+  // ── PRACTICE 3 ──
+  {id:20,date:"Fri May 22",phase:"Mech of Materials",type:"practice",color:"#FF5599",
+   topic:"⚡ Practice — Mechanics of Materials",qRange:"20 problems — timed",
+   subs:["5 stress/strain problems (axial and shear)","5 bending problems (draw SFD/BMD, find max bending stress)","5 torsion and Mohr's circle problems","5 deflection and buckling problems","Every wrong answer: find the formula in the handbook, redo from scratch"],
+   tip:"MoM has 9–14 questions. If you can do stress calculations and bending problems reliably, you're picking up a lot of points. Don't rush the shear/moment diagrams — they take practice to do quickly.",
+   free:["PrepFE — Mechanics of Materials drill","Lindeburg — FE Practice Problems (MoM chapter)"],
+   book:"NCEES FE Handbook — mechanics of materials section"},
+
+  // ── MATERIAL PROPERTIES ──
+  {id:21,date:"Thu May 28",phase:"Materials",type:"learn",color:"#FF5588",
+   topic:"Material Properties & Phase Diagrams",qRange:"7–11 exam questions",
+   subs:["Learn the stress-strain diagram: elastic region, yield point, ultimate strength, fracture","Know the difference: ductile (bends before breaking) vs brittle (snaps suddenly)","Learn the Fe-C (iron-carbon) phase diagram: regions for ferrite, austenite, pearlite, martensite","Learn heat treatment effects: quenching makes steel hard & brittle, annealing makes it soft & ductile"],
+   tip:"The stress-strain diagram is 100% guaranteed on the FE. Know what every region means. For the Fe-C diagram: the most tested points are the eutectoid composition (0.77% C) and the phases that form at different cooling rates. Quenching → martensite (hard). Annealing → softer, more ductile.",
+   free:["Professor Dave Explains — Materials Science YouTube (free, well-explained)","The Efficient Engineer — Stress-Strain Curve explainer"],
+   book:"Callister — Materials Science and Engineering: An Introduction (Ch. 6–10)"},
+
+  // ── FLUIDS ──
+  {id:22,date:"Fri May 29",phase:"Fluids",type:"learn",color:"#FF85B3",
+   topic:"Fluid Properties & Pressure",qRange:"Part of 10–15 fluid questions",
+   subs:["Learn key fluid properties: density (ρ), specific gravity, viscosity (dynamic μ, kinematic ν)","Learn pressure: what it is, absolute vs gauge pressure, units (Pa, psi, atm)","Learn how pressure varies with depth: p = ρgh","Learn manometers: how to read them and find pressure differences"],
+   tip:"Pressure unit conversions trip people up — know them: 1 atm = 101.3 kPa = 14.7 psi. Gauge pressure = absolute − atmospheric. Pressure at depth: every 1 m of water adds ~9810 Pa (≈ ρgh). Manometers: trace the fluid path and add/subtract ρgh at each step.",
+   free:["John Biddle — Fluid Mechanics YouTube Lecture 1 (free, starts from basics)","NPTEL Fluid Mechanics Lecture 1–3 (free)"],
+   book:"Munson — Fundamentals of Fluid Mechanics (Ch. 1–2)"},
+
+  {id:23,date:"Thu Jun 4",phase:"Fluids",type:"learn",color:"#FF85B3",
+   topic:"Fluid Statics & Hydrostatic Forces",qRange:"Part of 10–15 fluid questions",
+   subs:["Learn hydrostatic force on a flat submerged surface: F = ρg·ȳ·A","Find the center of pressure (where the force acts)","Learn buoyancy: buoyant force = weight of fluid displaced (Archimedes' principle)","Practice: find force on a dam gate, find if an object floats or sinks"],
+   tip:"Hydrostatic force problems follow the same steps every time: (1) find the area A, (2) find the depth to the centroid ȳ, (3) calculate F = ρgȳA, (4) find center of pressure using the formula in the handbook. Buoyancy: if buoyant force > weight, it floats.",
+   free:["John Biddle — Hydrostatic Forces YouTube","The Efficient Engineer — Fluid Statics explainer"],
+   book:"Munson — Fundamentals of Fluid Mechanics (Ch. 2)"},
+
+  {id:24,date:"Fri Jun 5",phase:"Fluids",type:"learn",color:"#FF85B3",
+   topic:"Bernoulli & Continuity Equations",qRange:"Part of 10–15 fluid questions",
+   subs:["Learn the continuity equation: A₁V₁ = A₂V₂ (what goes in = what comes out)","Learn Bernoulli's equation: p/ρg + V²/2g + z = constant along a streamline","Practice: flow through a narrowing pipe (find velocity change)","Practice: flow from a tank through a hole (find exit velocity)"],
+   tip:"Bernoulli + Continuity together solve the MAJORITY of fluid flow problems. The process: (1) identify two points, (2) write continuity to relate velocities, (3) write Bernoulli between the two points, (4) solve. Do this over and over until it's automatic.",
+   free:["John Biddle — Bernoulli Equation YouTube","The Efficient Engineer — Bernoulli Equation (great visual explainer)"],
+   book:"Munson — Fundamentals of Fluid Mechanics (Ch. 3)"},
+
+  {id:25,date:"Thu Jun 11",phase:"Fluids",type:"learn",color:"#FF85B3",
+   topic:"Pipe Flow & Head Loss",qRange:"Part of 10–15 fluid questions",
+   subs:["Learn Reynolds number: Re = ρVD/μ — determines if flow is laminar (Re<2300) or turbulent","Learn Darcy-Weisbach equation: head loss hL = f·(L/D)·(V²/2g)","Learn how to use the Moody chart (it's in the handbook) to find friction factor f","Practice: find head loss in a pipe given flow rate, diameter, pipe length, and roughness"],
+   tip:"Pipe flow problems = most common fluid question type. The process: (1) find Re, (2) use Moody chart to find f, (3) plug into Darcy-Weisbach. Practice this 3-step process 5–6 times and it becomes routine. The Moody chart is always in the handbook — never memorize it.",
+   free:["John Biddle — Pipe Flow & Darcy-Weisbach YouTube","The Efficient Engineer — Pipe Flow explainer"],
+   book:"Munson — Fundamentals of Fluid Mechanics (Ch. 8)"},
+
+  {id:26,date:"Fri Jun 12",phase:"Fluids",type:"learn",color:"#FF85B3",
+   topic:"Pumps, Turbines & Compressible Flow",qRange:"Part of 10–15 fluid questions",
+   subs:["Learn pump head equation: power P = ρgQH / efficiency","Learn pump scaling laws: Q∝N, H∝N², P∝N³","Learn Mach number: Ma = V/c (velocity / speed of sound)","Look at isentropic flow relations in the handbook — know where to find them"],
+   tip:"Pump scaling questions are pure formula plug-in — once you memorize Q∝N, H∝N², P∝N³ you'll never miss them. Compressible flow: just find the table in the handbook and use it. Don't try to derive anything.",
+   free:["The Efficient Engineer — Pump Curves & Scaling Laws YouTube","Michel van Biezen — Compressible Flow YouTube"],
+   book:"Munson — Fundamentals of Fluid Mechanics (Ch. 11–12)"},
+
+  // ── PRACTICE 4 ──
+  {id:27,date:"Thu Jun 18",phase:"Fluids",type:"practice",color:"#FF85B3",
+   topic:"⚡ Practice — Fluid Mechanics",qRange:"20 problems — timed",
+   subs:["4 fluid statics / hydrostatic force problems","4 Bernoulli + continuity problems","6 pipe flow problems using Darcy-Weisbach and Moody chart","3 pump/turbine power problems","3 misc: buoyancy, compressible flow, scaling laws"],
+   tip:"Fluid Mechanics is 10–15 questions. Pipe flow with Moody chart is the #1 most tested sub-topic. If you can reliably do those 3 steps (Re → Moody → Darcy-Weisbach) you're getting easy points.",
+   free:["PrepFE app — Fluid Mechanics drill","Lindeburg — FE Practice Problems (Fluids chapter)"],
+   book:"NCEES FE Handbook — fluid mechanics section"},
+
+  // ── THERMODYNAMICS ──
+  {id:28,date:"Fri Jun 19",phase:"Thermodynamics",type:"learn",color:"#CC0044",
+   topic:"Thermodynamics Basics & Steam Tables",qRange:"Part of 10–15 thermo questions",
+   subs:["Learn what a thermodynamic system is: closed vs open, boundary work vs flow work","Learn ideal gas law: PV = nRT","Learn steam table: how to find properties (T, P, h, s, v, quality x) at different states","Practice reading steam tables in the handbook for 4–5 different states"],
+   tip:"Steam tables are in the handbook — you'll use them on almost every thermodynamics problem. Practice finding: given T and P, find enthalpy h. Given quality x, find h = hf + x·hfg. This is a skill that just takes repetition — do it 10 times.",
+   free:["Michel van Biezen — Steam Tables YouTube (free, very clear)","NCEES FE Handbook — steam tables (open it right now and practice)"],
+   book:"Cengel & Boles — Thermodynamics: An Engineering Approach (Ch. 1–3)"},
+
+  {id:29,date:"Thu Jun 25",phase:"Thermodynamics",type:"learn",color:"#CC0044",
+   topic:"First & Second Law of Thermodynamics",qRange:"Part of 10–15 thermo questions",
+   subs:["Learn First Law: Q - W = ΔU for closed systems; Q - W = Δh for open systems (using enthalpy)","Learn how to apply first law to: turbines, compressors, boilers, condensers, nozzles","Learn Second Law: heat flows naturally from hot to cold","Learn thermal efficiency: η = W_net / Q_in, and Carnot efficiency: η = 1 - T_L/T_H"],
+   tip:"The first law is the most used equation in thermodynamics. For every component: identify Q (heat added) and W (work done), then first law gives you the rest. Carnot efficiency: ALWAYS use absolute temperature (Kelvin, not Celsius). This mistake costs easy points.",
+   free:["Michel van Biezen — First Law & Second Law YouTube","The Efficient Engineer — First Law of Thermodynamics explainer"],
+   book:"Cengel & Boles — Thermodynamics: An Engineering Approach (Ch. 4–7)"},
+
+  {id:30,date:"Fri Jun 26",phase:"Thermodynamics",type:"learn",color:"#CC0044",
+   topic:"Power Cycles (Rankine, Brayton, Otto, Diesel)",qRange:"Part of 10–15 thermo questions",
+   subs:["Learn the Rankine Cycle (steam power plant): 4 components, 4 states","For Rankine: pump → boiler → turbine → condenser, find efficiency","Learn Brayton Cycle (gas turbine): compressor → combustor → turbine","Learn Otto Cycle (gasoline engine): find efficiency from compression ratio"],
+   tip:"The process for ANY power cycle is ALWAYS: (1) draw it on a T-s diagram, (2) label the 4 states, (3) apply first law to each component to find work/heat, (4) calculate efficiency = W_net/Q_in. Rankine is the most common on the FE — practice it the most.",
+   free:["Michel van Biezen — Rankine Cycle YouTube (do this one first)","The Efficient Engineer — Thermodynamic Power Cycles (great overview video)"],
+   book:"Cengel & Boles — Thermodynamics: An Engineering Approach (Ch. 9–10)"},
+
+  {id:31,date:"Thu Jul 2",phase:"Thermodynamics",type:"learn",color:"#CC0044",
+   topic:"Refrigeration, Psychrometrics & Combustion",qRange:"Part of 10–15 thermo questions",
+   subs:["Learn refrigeration cycle: same as Rankine but reversed — COP_R = Q_L / W_in","Learn heat pump: COP_HP = Q_H / W_in (note: COP_HP = COP_R + 1 always)","Learn psychrometrics: dry-bulb temp, wet-bulb temp, relative humidity, specific humidity","Learn combustion: how to balance a combustion reaction, find air-fuel ratio"],
+   tip:"COP questions: know both formulas and know which is bigger (HP is always higher than refrigerator COP). Psychrometrics: the psychrometric chart is in the handbook — know what each axis means. Combustion: balance the chemical equation first, then everything else follows.",
+   free:["Michel van Biezen — Refrigeration & Psychrometrics YouTube","NCEES Handbook — study the psychrometric chart (open and read it)"],
+   book:"Cengel & Boles — Thermodynamics: An Engineering Approach (Ch. 11–15)"},
+
+  // ── PRACTICE 5 ──
+  {id:32,date:"Fri Jul 3",phase:"Thermodynamics",type:"practice",color:"#CC0044",
+   topic:"⚡ Practice — Thermodynamics",qRange:"25 problems — timed",
+   subs:["5 steam table reading problems","5 first law problems (turbines, boilers, compressors)","5 power cycle problems (Rankine or Brayton)","5 refrigeration/COP problems","5 psychrometrics or combustion problems"],
+   tip:"Thermodynamics is THE biggest topic. Take this practice day very seriously. If thermo is still feeling shaky, you still have 7+ weeks to shore it up. Mark every topic where you got less than 50% — those need more attention.",
+   free:["PrepFE — Thermodynamics drill (do every question available)","Lindeburg — FE Practice Problems (Thermo chapters)"],
+   book:"NCEES FE Handbook — steam tables and T-s diagrams"},
+
+  // ── HEAT TRANSFER ──
+  {id:33,date:"Thu Jul 9",phase:"Heat Transfer",type:"learn",color:"#FF3366",
+   topic:"Conduction & Thermal Resistance",qRange:"Part of 7–11 heat transfer questions",
+   subs:["Learn Fourier's Law: q = -kA(dT/dx) — heat flows from hot to cold","Learn thermal resistance: R = L/(kA) for a flat wall","Build a thermal resistance network for a composite wall (like electrical resistors in series)","Practice: find heat transfer rate through a wall with 3 layers (brick, insulation, drywall)"],
+   tip:"Think of thermal resistance like electrical resistance. Temperature difference = voltage. Heat flow = current. R_thermal = L/(kA). For a multi-layer wall: add the resistances in series, then q = ΔT / R_total. Once this analogy clicks, conduction problems are easy.",
+   free:["Michel van Biezen — Heat Conduction YouTube (free)","NPTEL Heat Transfer Lectures 1–4 (free)"],
+   book:"Cengel — Heat Transfer: A Practical Approach (Ch. 2–3)"},
+
+  {id:34,date:"Fri Jul 10",phase:"Heat Transfer",type:"learn",color:"#FF3366",
+   topic:"Convection, Radiation & Heat Exchangers",qRange:"Part of 7–11 heat transfer questions",
+   subs:["Learn Newton's Law of Cooling: q = h·A·(T_s - T_∞), where h is convection coefficient","Learn the 4-step process: find Re → look up Nu correlation in handbook → find h = Nu·k/L → find q","Learn Stefan-Boltzmann radiation: q = ε·σ·A·(T_hot⁴ - T_cold⁴)","Learn heat exchanger LMTD method: q = U·A·LMTD"],
+   tip:"Convection: you never memorize the Nu correlations — you look them up in the handbook. Your job is to know the 4-step process. Radiation: always use absolute temperature (Kelvin!). Heat exchangers: LMTD is the most common method — know how to calculate it for parallel and counter flow.",
+   free:["Michel van Biezen — Convection & Radiation YouTube","The Efficient Engineer — Heat Exchangers explainer"],
+   book:"Cengel — Heat Transfer: A Practical Approach (Ch. 7–11)"},
+
+  // ── CONTROLS ──
+  {id:35,date:"Thu Jul 16",phase:"Controls",type:"learn",color:"#FF1155",
+   topic:"Sensors, Instrumentation & Control Systems",qRange:"5–8 exam questions",
+   subs:["Learn sensor types: thermocouple (measures temp via voltage), RTD (resistance changes with temp), strain gauge (resistance changes with deformation)","Learn control systems: open-loop vs closed-loop feedback","Learn P, PI, PID controllers: what each term does (P reduces error, I removes steady-state error, D reduces overshoot)","Learn first-order system response: time constant τ, what it means for response speed"],
+   tip:"These questions are mostly conceptual — 'which sensor would you use to measure X?' or 'what does adding I-control do to the response?' You don't need to do heavy math. Read through the control systems section of the handbook and make sure you know the vocabulary.",
+   free:["Brian Douglas — PID Control explained YouTube (free, the best)","MATLAB Tech Talks — What is PID Control? (free, short & clear)"],
+   book:"Figliola & Beasley — Theory and Design for Mechanical Measurements (reference)"},
+
+  // ── MECHANICAL DESIGN ──
+  {id:36,date:"Fri Jul 17",phase:"Design",type:"learn",color:"#FF66AA",
+   topic:"Static Failure Theories",qRange:"Part of 10–15 design questions",
+   subs:["Learn von Mises (distortion energy) criterion for ductile materials: σ' = √(σ² + 3τ²)","Learn Tresca (max shear stress) criterion for ductile materials","Learn max normal stress criterion for brittle materials","Learn thin-wall pressure vessel: hoop stress σ_h = pr/t, axial stress σ_a = pr/2t","Practice: given loads on a shaft, find von Mises stress and factor of safety"],
+   tip:"Rule of thumb: ductile + static loading → use von Mises. Brittle + static → use Max Normal Stress. Thin-wall pressure vessels: hoop stress is TWICE the axial stress — this appears on almost every exam. Factor of safety n = S_y / σ'_von Mises.",
+   free:["The Efficient Engineer — Failure Theories YouTube (watch this first)","NCEES Handbook Ch. 14 — read through it once"],
+   book:"Shigley's Mechanical Engineering Design (Budynas & Nisbett) Ch. 5–6"},
+
+  {id:37,date:"Thu Jul 23",phase:"Design",type:"learn",color:"#FF66AA",
+   topic:"Fatigue Failure",qRange:"Part of 10–15 design questions",
+   subs:["Learn what fatigue failure is: failure below yield strength under repeated loading","Learn S-N diagram: endurance limit S_e, finite life vs infinite life","Learn Goodman criterion: σ_a/S_e + σ_m/S_ut = 1/n","Identify mean stress (σ_m) and alternating stress (σ_a) from a loading cycle","Learn stress concentration factor Kt and how it affects fatigue life"],
+   tip:"For fatigue problems: always separate the total stress into mean component σ_m and alternating component σ_a. Then plug into Goodman. For steel, endurance limit ≈ 0.5 × S_ut (this is in the handbook). Stress concentrations reduce fatigue life significantly.",
+   free:["The Efficient Engineer — Fatigue Failure YouTube","Michel van Biezen — Goodman Criterion problems YouTube"],
+   book:"Shigley's Mechanical Engineering Design Ch. 6"},
+
+  {id:38,date:"Fri Jul 24",phase:"Design",type:"learn",color:"#FF66AA",
+   topic:"Machine Elements — Gears, Springs & Bearings",qRange:"Part of 10–15 design questions",
+   subs:["Learn gear fundamentals: gear ratio = N₂/N₁ = ω₁/ω₂ (teeth ratio flips speed)","Learn power transmission: P = T·ω (power = torque × angular velocity)","Learn spring deflection: δ = 8FD³n/(Gd⁴) for helical coil spring","Springs in series vs parallel: series → add compliances (1/k_total = Σ1/k), parallel → add stiffnesses","Learn rolling bearing life: L₁₀ = (C/P)^3 × 10⁶ revolutions"],
+   tip:"Gear ratio is guaranteed every exam. Memorize: output/input speed = input/output teeth. For power: P = Tω in consistent units. Spring series vs parallel: think of it like electrical resistors but FLIPPED — springs in parallel add stiffness (like resistors in series).",
+   free:["The Efficient Engineer — Gears & Power Transmission YouTube","Michel van Biezen — Springs in Series and Parallel YouTube"],
+   book:"Shigley's Mechanical Engineering Design Ch. 10, 13, 18"},
+
+  {id:39,date:"Thu Jul 30",phase:"Design",type:"learn",color:"#FF66AA",
+   topic:"Joints, GD&T & Remaining Design Topics",qRange:"Part of 10–15 design questions",
+   subs:["Learn weld types and weld stress calculations (shear stress in fillet welds)","Learn bolted joints: preload, joint stiffness ratio","Learn limits & fits: clearance fit, interference fit, transition fit","Learn 5 key GD&T symbols: flatness, straightness, perpendicularity, true position, concentricity","Learn power screws: torque to raise/lower a load, self-locking condition"],
+   tip:"GD&T questions are usually definitional — 'what does this symbol mean?' Go through the 5 common symbols once and know each one. For limits & fits: clearance = shaft always smaller than hole. Interference = shaft always bigger than hole (you have to press them together).",
+   free:["GD&T Basics — gdandtbasics.com (free website, great reference)","The Efficient Engineer — Bolted Joints YouTube"],
+   book:"Shigley's Mechanical Engineering Design Ch. 8–9, 20"},
+
+  // ── PRACTICE 6 ──
+  {id:40,date:"Fri Jul 31",phase:"Design",type:"practice",color:"#FF66AA",
+   topic:"⚡ Practice — Design & Controls",qRange:"20 problems — timed",
+   subs:["5 static failure theory problems (von Mises, pressure vessels)","5 fatigue problems (Goodman line)","5 machine element problems (gears, springs, bearings)","3 controls problems (PID, sensors, block diagrams)","2 GD&T / joints problems"],
+   tip:"Mechanical Design is 10–15 questions. Failure theories and fatigue combined could be 6–8 questions alone. Getting comfortable with von Mises and Goodman is very high-value.",
+   free:["PrepFE — Mechanical Design drill","Lindeburg — FE Practice Problems (Design chapters)"],
+   book:"NCEES FE Handbook — machine design section"},
+
+  // ── FULL REVIEW ──
+  {id:41,date:"Thu Aug 6",phase:"Review",type:"exam",color:"#CC0044",
+   topic:"🎯 Full Practice Exam #1 — Timed",qRange:"110 questions / 6 hours",
+   subs:["Set a 6-hour timer and don't stop it","Use ONLY the NCEES FE Reference Handbook PDF — nothing else","Answer what you know first, flag hard questions, come back to them","Never leave a question blank (no penalty for wrong answers — always guess)","After: write down your score for each topic area"],
+   tip:"The goal of this first practice exam is NOT to pass — it's to get data. Your score tells you exactly where to spend your final 3 weeks. Don't be discouraged by the result. Every wrong answer is information.",
+   free:["NCEES Official Practice Exam — $40 at ncees.org (the most realistic mock exam)","PrepFE app — full exam mode","Lindeburg — FE Mechanical Practice Problems (use as mock exam)"],
+   book:"NCEES FE Reference Handbook — your ONLY allowed resource"},
+
+  {id:42,date:"Fri Aug 7",phase:"Review",type:"exam",color:"#CC0044",
+   topic:"📊 Practice Exam #1 — Full Review",qRange:"Full session",
+   subs:["Go through every single wrong answer — don't skip any","For each wrong answer ask: was it (a) I didn't know the concept, (b) I used the wrong formula, (c) I couldn't find it in the handbook, or (d) calculation mistake?","List your 3 weakest topics by number of questions missed","Plan: spend the next 2 weeks drilling ONLY those weak topics"],
+   tip:"This is the most valuable session in the entire plan. A wrong answer you truly understand becomes a guaranteed right answer on exam day. Don't just read the solution — redo the problem from scratch.",
+   free:["YouTube — go back and re-watch sessions for your weakest topics","NCEES Handbook — re-navigate to sections you struggled to find"],
+   book:"Return to the relevant textbook chapter for your weakest topics"},
+
+  {id:43,date:"Thu Aug 13",phase:"Review",type:"exam",color:"#CC0044",
+   topic:"🔁 Full Practice Exam #2 — Timed",qRange:"110 questions / 6 hours",
+   subs:["Same conditions: 6-hour timer, FE handbook only, no pausing","Focus on pacing: if a problem takes more than 4 minutes, flag it and move on","Practice finding formulas in the handbook as fast as possible","Compare your score to Practice Exam #1 — track improvement by topic"],
+   tip:"Use a different source for this exam (School of PE, Slabaugh, or Lindeburg) so you're seeing fresh questions. Aim to beat your Exam #1 score. If you're still weak on the same topics, that's your final signal to drill those hard in the last week.",
+   free:["School of PE — free sample problems at schoolofpe.com","Slabaugh Engineering — FE practice sets YouTube","PrepFE — second full attempt"],
+   book:"Lindeburg — FE Mechanical Practice Problems"},
+
+  {id:44,date:"Fri Aug 14",phase:"Review",type:"exam",color:"#FF6B9D",
+   topic:"🏁 Final Review & Exam Prep",qRange:"2–3 hours max",
+   subs:["Review your personal formula notes — nothing new, just refresh","Do 10 problems from each of your top 2 weak areas","Confirm your test center address and check-in time","Pack your valid government-issued photo ID","Plan your morning: breakfast, commute, arrive 30 minutes early","Get 8 hours of sleep — genuinely more important than studying tonight"],
+   tip:"You've studied 22 weeks and seen hundreds of practice problems. The exam is 110 questions in 6 hours — ~3.3 minutes per question. Answer easy ones first, flag hard ones, come back. NEVER leave a blank — always guess. You've done the work. Go get it.",
+   free:["ncees.org — confirm your appointment one more time","Your own notes — one final review"],
+   book:"Close the books. Rest is now the most important thing you can do."}
+];
+
+const PHASES=["All","Foundations","Statics","Dynamics","Mech of Materials","Materials","Fluids","Thermodynamics","Heat Transfer","Controls","Design","Review"];
+const PC={"Foundations":"#FF6B9D","Statics":"#FF4D7A","Dynamics":"#FF7AAD","Mech of Materials":"#FF5599","Materials":"#FF5588","Fluids":"#FF85B3","Thermodynamics":"#CC0044","Heat Transfer":"#FF3366","Controls":"#FF1155","Design":"#FF66AA","Review":"#FF6B9D"};
+
+const RESOURCES=[
+  {label:"🥇 Start With These",color:"#FF5599",items:[
+    {name:"NCEES FE Reference Handbook (FREE)",detail:"Download free at ncees.org. This is the ONLY thing allowed on exam day. Use it from your very first practice problem — never solve anything without it open."},
+    {name:"NCEES Official Practice Exam ($40)",detail:"The most realistic mock exam available. Written by the same people as the real exam. Use this as your Practice Exam #1 in August."},
+    {name:"PrepFE App (Free + Paid)",detail:"Practice questions organized by topic on your phone. Free tier has plenty of questions. Great for drilling between sessions."},
+  ]},
+  {label:"📺 Best Free YouTube By Topic",color:"#FF7AAD",items:[
+    {name:"Jeff Hanson → Statics & Dynamics",detail:"Starts from absolute basics. Clear, patient, well-organized. Best free mechanics content available."},
+    {name:"structurefree → Mechanics of Materials",detail:"Best free MoM content. Excellent on shear/moment diagrams, Mohr's circle, and deflections."},
+    {name:"Michel van Biezen → Thermo, Fluids, Heat Transfer, Vibrations",detail:"Thousands of short solved-problem videos (5–10 min each). Great for seeing how problems are worked through."},
+    {name:"The Efficient Engineer → Everything",detail:"Beautiful visual explainers for almost every FE topic. Watch these BEFORE doing problems to build intuition."},
+    {name:"Brian Douglas → Control Systems",detail:"The best free controls channel on YouTube. Clear and thorough."},
+    {name:"John Biddle → Fluid Mechanics",detail:"Great for fluid mechanics fundamentals, Bernoulli, and pipe flow problems."},
+    {name:"Professor Dave Explains → Materials Science",detail:"Best free materials science content. Great for Fe-C diagram and heat treatment."},
+    {name:"Professor Leonard → Calculus & Diff. Equations",detail:"Best free math content if your calculus feels rusty."},
+  ]},
+  {label:"📚 Textbooks (1 per topic — don't buy them all)",color:"#FF4D7A",items:[
+    {name:"Statics & Dynamics",detail:"Hibbeler — Engineering Mechanics: Statics + Dynamics (14th ed.) — most popular FE prep books for mechanics"},
+    {name:"Mechanics of Materials",detail:"Hibbeler — Mechanics of Materials (10th ed.) — the standard choice"},
+    {name:"Thermodynamics",detail:"Cengel & Boles — Thermodynamics: An Engineering Approach (8th ed.) — used in most ME programs"},
+    {name:"Fluid Mechanics",detail:"Munson — Fundamentals of Fluid Mechanics (8th ed.)"},
+    {name:"Heat Transfer",detail:"Cengel — Heat Transfer: A Practical Approach (3rd ed.)"},
+    {name:"Mechanical Design",detail:"Shigley's Mechanical Engineering Design (Budynas & Nisbett, 10th ed.)"},
+    {name:"Materials Science",detail:"Callister — Materials Science and Engineering: An Introduction"},
+    {name:"Engineering Economy",detail:"Blank & Tarquin — Engineering Economy"},
+  ]},
+  {label:"🧠 Exam Day Tips",color:"#F87171",items:[
+    {name:"Pacing",detail:"110 questions, 6 hours = 3.3 min per question. Answer easy ones first. Flag hard ones and come back. Never spend 10+ minutes on one problem."},
+    {name:"NEVER leave a blank answer",detail:"No penalty for wrong answers. A blank = guaranteed 0. An educated guess = 20-25% chance. Always fill in something."},
+    {name:"Use the handbook for everything",detail:"Before solving, find the formula in the handbook. Don't trust your memory — even for things you know well. The exam is designed to be taken with the handbook."},
+    {name:"Passing score",detail:"Roughly 50–60% correct typically passes. You do NOT need to be perfect. Focus on getting the medium-difficulty questions right, not the hardest ones."},
+    {name:"Register soon",detail:"Go to ncees.org → create an account → schedule your exam at a Pearson VUE center. September slots open in June — register by then."},
+    {name:"What to bring",detail:"Valid government-issued photo ID (passport or driver's license). The calculator is on-screen — don't bring your own. Eat before you go."},
+  ]},
+];
+
+let checked={}, filter="All";
+const total=S.length;
+
+function updateProgress(){
+  const n=Object.values(checked).filter(Boolean).length;
+  const p=Math.round(n/total*100);
+  const c=2*Math.PI*27;
+  document.getElementById('ring').setAttribute('stroke-dashoffset',(c*(1-p/100)).toFixed(1));
+  document.getElementById('ring').setAttribute('stroke',p===100?'#FF6B9D':'#FF5599');
+  document.getElementById('pct').textContent=p+'%';
+  document.getElementById('pcnt').textContent=n+' / '+total;
+}
+
+function toggleCheck(id,ev){
+  if(ev){ev.stopPropagation();}
+  checked[id]=!checked[id];
+  const ses=document.getElementById('s'+id);
+  const cb=document.getElementById('cb'+id);
+  if(checked[id]){ses.classList.add('done');cb.classList.add('on');cb.textContent='✓';}
+  else{ses.classList.remove('done');cb.classList.remove('on');cb.textContent='';}
+  updateProgress();
+}
+
+function toggleExpand(id){
+  const b=document.getElementById('b'+id);
+  const a=document.getElementById('a'+id);
+  const open=b.style.display==='block';
+  document.querySelectorAll('.body').forEach(x=>x.style.display='none');
+  document.querySelectorAll('.arr').forEach(x=>x.classList.remove('open'));
+  if(!open){b.style.display='block';a.classList.add('open');}
+}
+
+function setFilter(ph){
+  filter=ph;
+  document.querySelectorAll('.fbtn').forEach(btn=>{
+    const p=btn.dataset.phase,c=PC[p]||'#FF5599',active=p===ph;
+    btn.style.borderColor=active?c:'#4a0028';
+    btn.style.color=active?c:'#C4608A';
+    btn.style.background=active?c+'22':'transparent';
+  });
+  renderSessions();
+}
+
+function renderSessions(){
+  const list=document.getElementById('slist');
+  const data=filter==='All'?S:S.filter(s=>s.phase===filter);
+  list.innerHTML=data.map(s=>`
+    <div class="card${checked[s.id]?' done':''}${s.type==='practice'?' pday':''}${s.type==='exam'?' xday':''}"
+      id="s${s.id}" style="border-left:3px solid ${s.color}">
+      <div class="ch" onclick="toggleExpand(${s.id})">
+        <div class="cb${checked[s.id]?' on':''}" id="cb${s.id}" onclick="toggleCheck(${s.id},event)">${checked[s.id]?'✓':''}</div>
+        <div class="num" style="color:${s.color}">#${String(s.id).padStart(2,'0')}</div>
+        <div class="dt">${s.date}</div>
+        <div class="ti">
+          <div class="tn">${s.topic}</div>
+          <div class="tq">${s.qRange}</div>
+        </div>
+        <div class="ph" style="color:${s.color}">${s.phase}</div>
+        <div class="arr" id="a${s.id}">▾</div>
+      </div>
+      <div class="body" id="b${s.id}" style="display:none">
+        <div class="sl">WHAT TO DO THIS SESSION</div>
+        ${s.subs.map(t=>`<div class="sr"><span class="sa" style="color:${s.color}">→</span><span class="st">${t}</span></div>`).join('')}
+        <div class="tip" style="background:#1C0010;border:1px solid ${s.color}33;border-radius:7px;margin-top:11px;padding:11px 13px">
+          <div class="tiplbl">💡 TIP</div>
+          <div class="tiptxt">${s.tip}</div>
+        </div>
+        <div class="rg" style="margin-top:10px">
+          <div class="rb" style="border:1px solid #7a0040">
+            <div class="rl" style="color:#FF7AAD">🆓 FREE RESOURCES</div>
+            ${s.free.map(r=>`<div class="ri"><span style="color:#cc3366;flex-shrink:0">•</span>${r}</div>`).join('')}
+          </div>
+          <div class="rb" style="border:1px solid #7a0040">
+            <div class="rl" style="color:#FF4D80">📖 TEXTBOOK</div>
+            <div style="font-size:12px;color:#B05878;line-height:1.5">${s.book}</div>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderFilters(){
+  document.getElementById('filters').innerHTML=PHASES.map(p=>{
+    const c=PC[p]||'#FF5599',active=p===filter;
+    return `<button class="fbtn" data-phase="${p}" onclick="setFilter('${p}')"
+      style="border-color:${active?c:'#4a0028'};color:${active?c:'#C4608A'};background:${active?c+'22':'transparent'}">${p}</button>`;
+  }).join('');
+}
+
+function renderResources(){
+  document.getElementById('rcontent').innerHTML=RESOURCES.map(sec=>`
+    <div class="rs">
+      <div class="rst" style="color:${sec.color}">${sec.label}</div>
+      ${sec.items.map(i=>`
+        <div class="rc" style="border-left-color:${sec.color}66">
+          <div class="rcn">${i.name}</div>
+          <div class="rcd">${i.detail}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function switchTab(t){
+  document.getElementById('pt').style.display=t==='plan'?'block':'none';
+  document.getElementById('rt').style.display=t==='resources'?'block':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.className='tab'+((i===0&&t==='plan')||(i===1&&t==='resources')?' active':'');
+  });
+}
+
+renderFilters(); renderSessions(); renderResources();
+</script>
+</body>
+</html>
